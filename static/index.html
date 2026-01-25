@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Finder - Пошук Музики</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff6b35;
+            --primary-dark: #ff4500;
+            --bg-dark: #0a0e27;
+            --bg-darker: #050812;
+            --bg-card: #1a1f3a;
+            --bg-hover: #252d47;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --text-tertiary: #718096;
+            --border: #2d3748;
+            --success: #48bb78;
+            --error: #f56565;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background: rgba(5, 8, 18, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), #ff8c42);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .version {
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+            background: rgba(255, 107, 53, 0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 30px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .header p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .search-section {
+            background: linear-gradient(135deg, rgba(26, 31, 58, 0.8), rgba(37, 45, 71, 0.5));
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 25px;
+            margin-bottom: 50px;
+            box-shadow: var(--shadow);
+        }
+
+        .search-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        #searchInput {
+            flex: 1;
+            padding: 16px 24px;
+            border: 2px solid var(--border);
+            border-radius: 15px;
+            background: rgba(10, 14, 39, 0.6);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #searchInput:focus {
+            outline: none;
+            background: rgba(10, 14, 39, 0.9);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        #searchInput::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .btn {
+            padding: 16px 40px;
+            background: linear-gradient(135deg, var(--primary), #ff8c42);
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.35);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .track-card {
+            background: var(--bg-card);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .track-card:hover {
+            background: var(--bg-hover);
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.15);
+        }
+
+        .track-thumbnail {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #1a1f3a, #252d47);
+        }
+
+        .track-info {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .track-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .track-artist {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .track-duration {
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary), #ff8c42);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: auto;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
+        }
+
+        .download-btn:disabled {
+            background: var(--bg-darker);
+            cursor: not-allowed;
+            color: var(--text-tertiary);
+            box-shadow: none;
+            transform: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 40px;
+            display: none;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 107, 53, 0.1);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .alert {
+            padding: 16px 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: none;
+            border: 1px solid;
+            backdrop-filter: blur(10px);
+            animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error {
+            background: rgba(245, 101, 101, 0.15);
+            border-color: var(--error);
+            color: #ff9f9f;
+        }
+
+        .success {
+            background: rgba(72, 187, 120, 0.15);
+            border-color: var(--success);
+            color: #9ae6b4;
+        }
+
+        .results-count {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 80px 40px;
+            color: var(--text-tertiary);
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+
+            .search-section {
+                padding: 25px;
+            }
+
+            .navbar-content {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="logo">🎵 Music Finder</a>
+            <div class="version">v2.0</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Знайди Свою Пісню</h1>
+            <p>Пошук музики з YouTube та завантаження в MP3</p>
+        </div>
+        
+        <div class="search-section">
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Пошук по назві пісні, виконавцю... (наприклад: all eyez on me)"
+                    autocomplete="off"
+                >
+                <button class="btn" id="searchBtn">Пошук</button>
+            </div>
+        </div>
+        
+        <div class="alert error" id="errorMsg"></div>
+        <div class="alert success" id="successMsg"></div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Пошук музики...</p>
+        </div>
+        
+        <div id="resultsContainer"></div>
+    </div>
+    
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const loading = document.getElementById('loading');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        searchBtn.addEventListener('click', performSearch);
+        
+        async function performSearch() {
+            const query = searchInput.value.trim();
+            
+            if (!query) {
+                showError('Будь ласка, введіть назву пісні');
+                return;
+            }
+            
+            loading.style.display = 'block';
+            resultsContainer.innerHTML = '';
+            errorMsg.style.display = 'none';
+            searchBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query, limit: 15 })
+                });
+                
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.detail || 'Помилка пошуку');
+                }
+                
+                const data = await response.json();
+                displayResults(data);
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                loading.style.display = 'none';
+                searchBtn.disabled = false;
+            }
+        }
+        
+        function displayResults(data) {
+            if (data.results.length === 0) {
+                resultsContainer.innerHTML = '<div class="no-results">Пісні не знайдені. Спробуйте інший пошук.</div>';
+                return;
+            }
+            
+            const html = `
+                <div class="results-count">Знайдено ${data.results.length} результатів</div>
+                <div class="results-grid">
+                    ${data.results.map(track => `
+                        <div class="track-card">
+                            <img src="${track.thumbnail}" alt="${track.title}" class="track-thumbnail" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22260%22 height=%22220%22%3E%3Crect fill=%22%231a1f3a%22 width=%22260%22 height=%22220%22/%3E%3C/svg%3E'">
+                            <div class="track-info">
+                                <div class="track-title">${escapeHtml(track.title)}</div>
+                                <div class="track-artist">${escapeHtml(track.artist)}</div>
+                                <div class="track-duration">${formatDuration(track.duration)}</div>
+                                <button class="download-btn" onclick="downloadTrack('${track.id}', '${escapeAttr(track.title)}')">
+                                    ⬇️ Завантажити
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            resultsContainer.innerHTML = html;
+        }
+        
+        async function downloadTrack(videoId, title) {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = '⏳ Завантаження...';
+            
+            try {
+                const response = await fetch('/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ video_id: videoId, title })
+                });
+                
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.detail || 'Помилка завантаження');
+                }
+                
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${title}.mp3`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                showSuccess(`✅ "${title}" успішно завантажена!`);
+            } catch (error) {
+                showError(`Помилка: ${error.message}`);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '⬇️ Завантажити';
+            }
+        }
+        
+        function formatDuration(seconds) {
+            if (!seconds) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function escapeAttr(text) {
+            return text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+        
+        function showError(message) {
+            errorMsg.textContent = '❌ ' + message;
+            errorMsg.style.display = 'block';
+            successMsg.style.display = 'none';
+        }
+        
+        function showSuccess(message) {
+            successMsg.textContent = message;
+            successMsg.style.display = 'block';
+            errorMsg.style.display = 'none';
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
