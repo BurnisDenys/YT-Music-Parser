@@ -55,3 +55,5 @@ You can configure the application using environment variables or a `.env` file:
 ## 📝 License
 
 This project is licensed under the MIT License.
+
+I successfully did this project with the help of YouTube.
