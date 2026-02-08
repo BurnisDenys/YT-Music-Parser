@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Finder - Пошук Музики</title>
+    <title>Music Finder - Search and Download MP3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,30 +18,33 @@
         :root {
             --primary: #ff6b35;
             --primary-dark: #ff4500;
-            --bg-dark: #0a0e27;
             --bg-darker: #050812;
-            --bg-card: #1a1f3a;
-            --bg-hover: #252d47;
+            --bg-dark: #0a0e27;
+            --bg-card: rgba(26, 31, 58, 0.6);
+            --bg-hover: rgba(37, 45, 71, 0.8);
             --text-primary: #ffffff;
             --text-secondary: #a0aec0;
             --text-tertiary: #718096;
-            --border: #2d3748;
+            --border: rgba(45, 55, 72, 0.5);
             --success: #48bb78;
             --error: #f56565;
+            --accent-gradient: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
             --shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
-            background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+            font-family: 'Outfit', sans-serif;
+            background: radial-gradient(circle at top right, #1a1f3a 0%, #050812 100%);
             min-height: 100vh;
             color: var(--text-primary);
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
         .navbar {
-            background: rgba(5, 8, 18, 0.8);
+            background: rgba(5, 8, 18, 0.7);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             padding: 20px 0;
             position: sticky;
@@ -55,111 +62,111 @@
         }
 
         .logo {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), #ff8c42);
+            background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            letter-spacing: -0.5px;
         }
 
         .version {
             color: var(--text-tertiary);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             background: rgba(255, 107, 53, 0.1);
-            padding: 4px 12px;
-            border-radius: 20px;
+            padding: 6px 14px;
+            border-radius: 50px;
             border: 1px solid rgba(255, 107, 53, 0.2);
+            font-weight: 600;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 60px 30px;
+            padding: 80px 30px;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 80px;
         }
 
         .header h1 {
-            font-size: 4rem;
-            font-weight: 900;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+            font-size: 4.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #a0aec0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             line-height: 1.1;
+            letter-spacing: -2px;
         }
 
         .header p {
-            font-size: 1.15rem;
+            font-size: 1.25rem;
             color: var(--text-secondary);
-            margin-bottom: 10px;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .search-section {
-            background: linear-gradient(135deg, rgba(26, 31, 58, 0.8), rgba(37, 45, 71, 0.5));
-            backdrop-filter: blur(20px);
+            background: rgba(26, 31, 58, 0.4);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
             border: 1px solid var(--border);
-            padding: 40px;
-            border-radius: 25px;
-            margin-bottom: 50px;
+            padding: 50px;
+            border-radius: 32px;
+            margin-bottom: 60px;
             box-shadow: var(--shadow);
         }
 
         .search-container {
             display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 20px;
         }
 
         #searchInput {
             flex: 1;
-            padding: 16px 24px;
+            padding: 20px 28px;
             border: 2px solid var(--border);
-            border-radius: 15px;
-            background: rgba(10, 14, 39, 0.6);
+            border-radius: 20px;
+            background: rgba(10, 14, 39, 0.5);
             color: var(--text-primary);
-            font-size: 1rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            font-family: inherit;
         }
 
         #searchInput:focus {
             outline: none;
-            background: rgba(10, 14, 39, 0.9);
+            background: rgba(10, 14, 39, 0.8);
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
-        }
-
-        #searchInput::placeholder {
-            color: var(--text-tertiary);
+            box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.15);
         }
 
         .btn {
-            padding: 16px 40px;
-            background: linear-gradient(135deg, var(--primary), #ff8c42);
+            padding: 20px 48px;
+            background: var(--accent-gradient);
             color: #fff;
             border: none;
-            border-radius: 15px;
+            border-radius: 20px;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             letter-spacing: 0.5px;
-            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.2);
+            box-shadow: 0 10px 40px rgba(255, 107, 53, 0.3);
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.35);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(255, 107, 53, 0.5);
         }
 
         .btn:active {
@@ -170,21 +177,23 @@
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
         .results-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
         }
 
         .track-card {
             background: var(--bg-card);
-            border-radius: 18px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 24px;
             overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             border: 1px solid var(--border);
             display: flex;
             flex-direction: column;
@@ -192,85 +201,98 @@
 
         .track-card:hover {
             background: var(--bg-hover);
-            transform: translateY(-8px);
-            border-color: var(--primary);
-            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.15);
+            transform: translateY(-12px);
+            border-color: rgba(255, 107, 53, 0.4);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .track-thumbnail-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
         }
 
         .track-thumbnail {
             width: 100%;
-            height: 220px;
+            height: 100%;
             object-fit: cover;
-            background: linear-gradient(135deg, #1a1f3a, #252d47);
+            transition: transform 0.6s ease;
+        }
+
+        .track-card:hover .track-thumbnail {
+            transform: scale(1.1);
         }
 
         .track-info {
-            padding: 20px;
+            padding: 24px;
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
         .track-title {
-            font-weight: 700;
-            font-size: 1.05rem;
-            margin-bottom: 10px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
             color: var(--text-primary);
-            line-height: 1.3;
+            line-height: 1.4;
         }
 
         .track-artist {
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 1rem;
             margin-bottom: 12px;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            font-weight: 400;
         }
 
-        .track-duration {
+        .track-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
             color: var(--text-tertiary);
-            font-size: 0.85rem;
-            margin-bottom: 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
         }
 
         .download-btn {
             width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, var(--primary), #ff8c42);
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.05);
             color: #fff;
-            border: none;
-            border-radius: 12px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: auto;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .download-btn:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
+        .download-btn:hover:not(:disabled) {
+            background: var(--accent-gradient);
+            border-color: transparent;
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
         }
 
         .download-btn:disabled {
-            background: var(--bg-darker);
+            opacity: 0.5;
             cursor: not-allowed;
-            color: var(--text-tertiary);
-            box-shadow: none;
-            transform: none;
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .loading {
             text-align: center;
-            padding: 60px 40px;
+            padding: 80px 40px;
             display: none;
         }
 
@@ -278,32 +300,38 @@
             border: 4px solid rgba(255, 107, 53, 0.1);
             border-top: 4px solid var(--primary);
             border-radius: 50%;
-            width: 70px;
-            height: 70px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            margin: 0 auto 24px;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .alert {
-            padding: 16px 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
+            padding: 20px 24px;
+            border-radius: 20px;
+            margin-bottom: 30px;
             display: none;
             border: 1px solid;
             backdrop-filter: blur(10px);
-            animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -311,34 +339,37 @@
         }
 
         .error {
-            background: rgba(245, 101, 101, 0.15);
-            border-color: var(--error);
+            background: rgba(245, 101, 101, 0.1);
+            border-color: rgba(245, 101, 101, 0.3);
             color: #ff9f9f;
         }
 
         .success {
-            background: rgba(72, 187, 120, 0.15);
-            border-color: var(--success);
+            background: rgba(72, 187, 120, 0.1);
+            border-color: rgba(72, 187, 120, 0.3);
             color: #9ae6b4;
         }
 
         .results-count {
             color: var(--text-secondary);
-            margin-bottom: 25px;
-            font-size: 0.95rem;
-            font-weight: 500;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
         }
 
         .no-results {
             text-align: center;
-            padding: 80px 40px;
+            padding: 100px 40px;
             color: var(--text-tertiary);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 24px;
+            border: 1px dashed var(--border);
         }
 
         @media (max-width: 768px) {
             .header h1 {
-                font-size: 2.5rem;
+                font-size: 3rem;
             }
 
             .search-container {
@@ -350,56 +381,49 @@
             }
 
             .container {
-                padding: 30px 20px;
+                padding: 40px 20px;
             }
 
             .search-section {
-                padding: 25px;
-            }
-
-            .navbar-content {
-                padding: 0 20px;
+                padding: 30px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="navbar">
         <div class="navbar-content">
-            <a href="/" class="logo">🎵 Music Finder</a>
-            <div class="version">v2.0</div>
+            <a href="/" class="logo">🎵 MusicFinder</a>
+            <div class="version">v2.1</div>
         </div>
     </div>
-    
+
     <div class="container">
         <div class="header">
-            <h1>Знайди Свою Пісню</h1>
-            <p>Пошук музики з YouTube та завантаження в MP3</p>
+            <h1>Find Your Sound</h1>
+            <p>High-quality YouTube to MP3 converter. Search for your favorite artists and download tracks instantly.
+            </p>
         </div>
-        
+
         <div class="search-section">
             <div class="search-container">
-                <input 
-                    type="text" 
-                    id="searchInput" 
-                    placeholder="Пошук по назві пісні, виконавцю... (наприклад: all eyez on me)"
-                    autocomplete="off"
-                >
-                <button class="btn" id="searchBtn">Пошук</button>
+                <input type="text" id="searchInput" placeholder="Search for song, artist, or URL..." autocomplete="off">
+                <button class="btn" id="searchBtn">SEARCH</button>
             </div>
         </div>
-        
+
         <div class="alert error" id="errorMsg"></div>
         <div class="alert success" id="successMsg"></div>
-        
+
         <div class="loading" id="loading">
             <div class="spinner"></div>
-            <p>Пошук музики...</p>
+            <p>Searching for tracks...</p>
         </div>
-        
+
         <div id="resultsContainer"></div>
     </div>
-    
+
     <script>
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
@@ -407,40 +431,40 @@
         const resultsContainer = document.getElementById('resultsContainer');
         const errorMsg = document.getElementById('errorMsg');
         const successMsg = document.getElementById('successMsg');
-        
+
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 performSearch();
             }
         });
-        
+
         searchBtn.addEventListener('click', performSearch);
-        
+
         async function performSearch() {
             const query = searchInput.value.trim();
-            
+
             if (!query) {
-                showError('Будь ласка, введіть назву пісні');
+                showError('Please enter a song name or artist');
                 return;
             }
-            
+
             loading.style.display = 'block';
             resultsContainer.innerHTML = '';
             errorMsg.style.display = 'none';
             searchBtn.disabled = true;
-            
+
             try {
                 const response = await fetch('/search', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ query, limit: 15 })
                 });
-                
+
                 if (!response.ok) {
                     const data = await response.json();
-                    throw new Error(data.detail || 'Помилка пошуку');
+                    throw new Error(data.detail || 'Search failed');
                 }
-                
+
                 const data = await response.json();
                 displayResults(data);
             } catch (error) {
@@ -450,52 +474,61 @@
                 searchBtn.disabled = false;
             }
         }
-        
+
         function displayResults(data) {
             if (data.results.length === 0) {
-                resultsContainer.innerHTML = '<div class="no-results">Пісні не знайдені. Спробуйте інший пошук.</div>';
+                resultsContainer.innerHTML = '<div class="no-results">No tracks found. Try a different search.</div>';
                 return;
             }
-            
+
             const html = `
-                <div class="results-count">Знайдено ${data.results.length} результатів</div>
+                <div class="results-count">Found ${data.results.length} results</div>
                 <div class="results-grid">
                     ${data.results.map(track => `
                         <div class="track-card">
-                            <img src="${track.thumbnail}" alt="${track.title}" class="track-thumbnail" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22260%22 height=%22220%22%3E%3Crect fill=%22%231a1f3a%22 width=%22260%22 height=%22220%22/%3E%3C/svg%3E'">
+                            <div class="track-thumbnail-container">
+                                <img src="${track.thumbnail}" alt="${track.title}" class="track-thumbnail" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #1a1f3a, #252d47)';">
+                                <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: -1;">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+                                </div>
+                            </div>
                             <div class="track-info">
-                                <div class="track-title">${escapeHtml(track.title)}</div>
+                                <div class="track-title" title="${escapeHtml(track.title)}">${escapeHtml(track.title)}</div>
                                 <div class="track-artist">${escapeHtml(track.artist)}</div>
-                                <div class="track-duration">${formatDuration(track.duration)}</div>
-                                <button class="download-btn" onclick="downloadTrack('${track.id}', '${escapeAttr(track.title)}')">
-                                    ⬇️ Завантажити
+                                <div class="track-meta">
+                                    <span>${formatDuration(track.duration)}</span>
+                                    <span>High Quality</span>
+                                </div>
+                                <button class="download-btn" onclick="downloadTrack(event, '${track.id}', '${escapeAttr(track.title)}')">
+                                    <span>⬇️</span> DOWNLOAD MP3
                                 </button>
                             </div>
                         </div>
                     `).join('')}
                 </div>
             `;
-            
+
             resultsContainer.innerHTML = html;
         }
-        
-        async function downloadTrack(videoId, title) {
-            const btn = event.target;
+
+        async function downloadTrack(event, videoId, title) {
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
             btn.disabled = true;
-            btn.textContent = '⏳ Завантаження...';
-            
+            btn.innerHTML = '<span>⏳</span> PREPARING...';
+
             try {
                 const response = await fetch('/download', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ video_id: videoId, title })
                 });
-                
+
                 if (!response.ok) {
                     const data = await response.json();
-                    throw new Error(data.detail || 'Помилка завантаження');
+                    throw new Error(data.detail || 'Download failed');
                 }
-                
+
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -505,47 +538,50 @@
                 a.click();
                 window.URL.revokeObjectURL(url);
                 document.body.removeChild(a);
-                
-                showSuccess(`✅ "${title}" успішно завантажена!`);
+
+                showSuccess(`✅ "${title}" downloaded successfully!`);
             } catch (error) {
-                showError(`Помилка: ${error.message}`);
+                showError(`Error: ${error.message}`);
             } finally {
                 btn.disabled = false;
-                btn.textContent = '⬇️ Завантажити';
+                btn.innerHTML = originalText;
             }
         }
-        
+
         function formatDuration(seconds) {
             if (!seconds) return '0:00';
             const mins = Math.floor(seconds / 60);
             const secs = seconds % 60;
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
-        
+
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
-        
+
         function escapeAttr(text) {
+            if (!text) return "";
             return text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
         }
-        
+
         function showError(message) {
             errorMsg.textContent = '❌ ' + message;
             errorMsg.style.display = 'block';
             successMsg.style.display = 'none';
+            window.scrollTo({ top: 400, behavior: 'smooth' });
         }
-        
+
         function showSuccess(message) {
             successMsg.textContent = message;
             successMsg.style.display = 'block';
             errorMsg.style.display = 'none';
             setTimeout(() => {
                 successMsg.style.display = 'none';
-            }, 5000);
+            }, 8000);
         }
     </script>
 </body>
+
 </html>
