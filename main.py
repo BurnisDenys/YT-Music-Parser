@@ -177,9 +177,12 @@ def download_audio_sync(video_id: str, title: str) -> Tuple[str, str]:
             "socket_timeout": 60,
             "nocheckcertificate": True,
             "geo_bypass": True,
-            "add_header": [
-                'Accept-Language: en-US,en;q=0.9',
-            ],
+            "extractor_args": {"youtube": {"player_client": ["android", "web"]}},
+            "http_headers": {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                "Accept-Language": "en-US,en;q=0.9",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            },
             "concurrent_fragment_downloads": 4,
             "fragment_retries": 15,
             "retries": 15,
