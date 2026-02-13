@@ -1,59 +1,84 @@
 # 🎵 Music Finder v2.1
 
-A modern, high-performance web application designed to search for music on YouTube and download it in high-quality MP3 format. Built with FastAPI and `yt-dlp`.
+Music Finder is a lightweight web application built with **FastAPI** that allows users to search for YouTube videos by song name and extract audio in **MP3 format**.
+
+This project was created as a **learning project** to practice backend development, async programming, and working with external tools like `yt-dlp` and FFmpeg.
+
+---
 
 ## ✨ Features
 
-- **Blazing Fast Search**: Real-time YouTube search with intelligent caching.
-- **Premium UI**: Modern glassmorphic design with smooth animations and responsive layout.
-- **MP3 Download**: High-quality audio extraction (192kbps).
-- **Auto-Cleanup**: Automatically removes old downloads to save disk space.
-- **Async Architecture**: Non-blocking search and download operations.
+- 🔍 **YouTube Search**: Search videos by song title or keywords
+- ⚡ **Fast Performance**: Async requests + caching for better speed
+- 🎧 **MP3 Audio Extraction**: Converts video audio stream into MP3 (192kbps)
+- 🧹 **Auto Cleanup**: Automatically removes old downloaded files
+- 💻 **Modern UI**: Responsive design with smooth animations (Glassmorphism style)
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Python 3.9+, FastAPI, uvicorn
-- **Audio Processing**: `yt-dlp`, FFmpeg
-- **Frontend**: Vanilla HTML5, CSS3 (Glassmorphism), Javascript (Async/Await)
+- **Backend**: Python 3.9+, FastAPI, Uvicorn
+- **Audio Tools**: `yt-dlp`, FFmpeg
+- **Frontend**: HTML5, CSS3, JavaScript (Async/Await)
+
+---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
 - Python 3.9 or higher
-- **FFmpeg** installed on your system (required for audio conversion)
+- FFmpeg installed and доступний у PATH
+
+---
 
 ### Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/music-finder.git
-   cd music-finder
-   ```
 
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+git clone https://github.com/your-username/music-finder.git
+cd music-finder
+Install dependencies:
 
-3. Run the application:
-   ```bash
-   python main.py
-   ```
+pip install -r requirements.txt
+Run the project:
 
-4. Open your browser and navigate to:
-   `http://127.0.0.1:8001`
+uvicorn main:app --reload --port 8001
+Open in browser:
 
-## ⚙️ Configuration
+http://127.0.0.1:8001
+⚙️ Configuration
+You can configure the project using environment variables or a .env file:
 
-You can configure the application using environment variables or a `.env` file:
+PORT — Server port (default: 8001)
 
-- `PORT`: Server port (default: 8001)
-- `DOWNLOADS_DIR`: Directory for MP3 files (default: `./downloads`)
-- `MAX_FILE_SIZE`: Maximum allowed download size in bytes (default: 150MB)
+DOWNLOADS_DIR — Folder for MP3 files (default: ./downloads)
 
-## 📝 License
+MAX_FILE_SIZE — Maximum allowed file size in bytes (default: 150MB)
 
+📌 Project Goal
+This project was built to practice:
+
+FastAPI routing and async endpoints
+
+working with background tasks
+
+caching logic for performance optimization
+
+integration with external CLI tools (yt-dlp, FFmpeg)
+
+building a clean and responsive frontend
+
+⚠️ Disclaimer
+This project is for educational purposes only.
+Users are responsible for соблюдання copyright laws and YouTube Terms of Service.
+The author is not responsible for any misuse.
+
+<<<<<<< HEAD
 This project is licensed under the MIT License.
 
 I successfully did this project with the help of YouTube.
+=======
+>>>>>>> a5fa372 (adding readme)
