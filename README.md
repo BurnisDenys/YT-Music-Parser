@@ -1,6 +1,7 @@
 # 🎵 Music Finder v2.1
 
-# DEMO LINK: https://yt-music-parser1.onrender.com
+## 👇DEMO LINK:
+https://yt-music-parser1.onrender.com
 
 Music Finder is a lightweight web application built with **FastAPI** that allows users to search for YouTube videos by song name and extract audio in **MP3 format**.
 
